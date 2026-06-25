@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity Portfolio Dashboard Mockup</title>
+<style>
+  :root{
+    --bg:#f4f4ef; --surface:#ffffff; --surface2:#f1efe8;
+    --text:#1a1a1a; --text2:#5f5e5a; --text3:#888780;
+    --border:#e2e0d8; --success:#0f6e56; --danger:#a32d2d;
+    --navy:#2e4156;
+    --radius-md:8px; --radius-lg:12px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:var(--font); padding:24px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+  .banner{background:var(--navy); color:#fff; border-radius:var(--radius-lg); padding:16px 20px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+  .banner .eyebrow{font-size:11px; letter-spacing:1.5px; color:#aebccd; margin-bottom:4px;}
+  .banner h1{font-size:19px; font-weight:500; margin:0;}
+  .banner .tag{font-size:11px; letter-spacing:1px; color:#aebccd;}
+  select{font-family:inherit; font-size:13px; padding:7px 10px; border:0.5px solid #cfcdc4; border-radius:var(--radius-md); background:var(--surface); color:var(--text); max-width:240px;}
+  .head{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px;}
+  .sub{font-size:12px; color:var(--text3);}
+  .scope{font-size:12px; color:var(--text2); margin-left:4px;}
+  .filters{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .filters label{font-size:12px; color:var(--text2);}
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:16px;}
+  .card{background:var(--surface2); border-radius:var(--radius-md); padding:14px 16px;}
+  .card .lbl{font-size:13px; color:var(--text2);}
+  .card .val{font-size:24px; font-weight:500; margin:2px 0;}
+  .card .note{font-size:12px; color:var(--text3);}
+  .note.up{color:var(--success);} .note.dn{color:var(--danger);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px;}
+  .panel{background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:16px 18px;}
+  .panel h3{font-size:14px; font-weight:500; margin:0 0 10px;}
+  .legend{display:flex; gap:14px; margin-bottom:8px; font-size:12px; color:var(--text2); flex-wrap:wrap;}
+  .legend span{display:flex; align-items:center; gap:5px;}
+  .sw{width:10px; height:10px; border-radius:2px; display:inline-block;}
+  .cv{position:relative; width:100%; height:220px;}
+  .srcbar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12px; color:var(--text2); background:var(--surface2); border-radius:var(--radius-md); padding:8px 12px; margin-bottom:16px;}
+  .srcbar .dot{width:7px; height:7px; border-radius:50%; background:var(--success); display:inline-block;}
+  .srcbar b{font-weight:500; color:var(--text);}
+  .sources{margin-top:18px; background:var(--surface); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:14px 18px;}
+  .sources h3{font-size:14px; font-weight:500; margin:0 0 10px;}
+  .sources table{width:100%; border-collapse:collapse; font-size:13px;}
+  .sources td{padding:6px 8px; border-bottom:0.5px solid var(--border); color:var(--text2); vertical-align:top;}
+  .sources tr:last-child td{border-bottom:none;}
+  .sources td:first-child{color:var(--text); width:180px;}
+  .foot{margin-top:14px; font-size:12px; color:var(--text3); text-align:center;}
+  .tabs{display:flex; gap:4px; margin-bottom:16px; border-bottom:0.5px solid var(--border);}
+  .tab{padding:8px 16px; font-size:14px; color:var(--text2); cursor:pointer; border:none; background:none; border-bottom:2px solid transparent; font-family:inherit;}
+  .tab.active{color:var(--text); border-bottom-color:var(--navy); font-weight:500;}
+  .wftable{width:100%; border-collapse:collapse; font-size:13px;}
+  .wftable th{text-align:left; font-weight:500; color:var(--text2); padding:8px; border-bottom:0.5px solid var(--border); font-size:12px;}
+  .wftable td{padding:9px 8px; border-bottom:0.5px solid var(--border); color:var(--text);}
+  .wftable tr:last-child td{border-bottom:none;}
+  .rowlink{cursor:pointer;}
+  .rowlink:hover td{background:#faf9f5;}
+  .badge{display:inline-block; font-size:11px; padding:3px 9px; border-radius:20px; font-weight:500; white-space:nowrap;}
+  .b-sub{background:#FAEEDA; color:#854F0B;}
+  .b-prog{background:#E6F1FB; color:#0C447C;}
+  .b-done{background:#E1F5EE; color:#0F6E56;}
+  .b-notice{background:#F1EFE8; color:#444441;}
+  .muted{color:var(--text3);}
+  .wfbar{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px;}
+  .roles{display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+  .roles .rl{font-size:12px; color:var(--text2); margin-right:2px;}
+  .rpill{padding:6px 12px; border-radius:99px; border:0.5px solid var(--border); background:#fff; font-size:12.5px; color:var(--text2); cursor:pointer; font-family:inherit;}
+  .rpill.active{background:var(--navy); border-color:var(--navy); color:#fff; font-weight:500;}
+  .bellwrap{position:relative;}
+  .bell{background:#fff; border:0.5px solid var(--border); border-radius:var(--radius-md); padding:7px 11px; font-size:15px; cursor:pointer; position:relative;}
+  .bell-badge{position:absolute; top:-6px; right:-6px; background:var(--danger); color:#fff; font-size:10px; font-weight:600; border-radius:99px; padding:1px 6px;}
+  .notif-drop{position:absolute; right:0; top:42px; width:360px; max-width:80vw; background:#fff; border:0.5px solid var(--border); border-radius:var(--radius-lg); box-shadow:0 12px 32px rgba(16,24,40,.16); z-index:60; display:none; overflow:hidden;}
+  .notif-drop.open{display:block;}
+  .notif-head{padding:10px 14px; border-bottom:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-weight:500; font-size:13px;}
+  .notif-item{padding:11px 14px; border-bottom:0.5px solid var(--border); font-size:12.5px; line-height:1.45; color:var(--text2);}
+  .notif-item:last-child{border-bottom:none;}
+  .notif-item .nw{font-size:11px; color:var(--text3); margin-top:2px;}
+  .linklike{background:none; border:none; color:#185FA5; font-size:12.5px; font-weight:500; cursor:pointer; font-family:inherit; padding:0;}
+  .wf-actions{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center;}
+  .btn{padding:8px 14px; border-radius:var(--radius-md); border:0.5px solid var(--border); background:#fff; font-size:12.5px; font-weight:500; color:var(--text); cursor:pointer; font-family:inherit;}
+  .btn:hover{border-color:#c8c6bd;}
+  .btn.primary{background:var(--navy); border-color:var(--navy); color:#fff;}
+  .btn.sm{padding:5px 10px; font-size:12px;}
+  .overlay{position:fixed; inset:0; background:rgba(15,23,42,.5); display:none; align-items:center; justify-content:center; z-index:100; padding:20px;}
+  .overlay.open{display:flex;}
+  .modal{background:#fff; border-radius:14px; width:540px; max-width:100%; max-height:92vh; overflow:auto; box-shadow:0 24px 60px rgba(0,0,0,.25);}
+  .modal .mh{padding:16px 20px; border-bottom:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center;}
+  .modal .mh h3{font-size:15px; font-weight:500; margin:0;}
+  .xbtn{background:none; border:none; font-size:18px; color:var(--text3); cursor:pointer;}
+  .modal .mb{padding:18px 20px;}
+  .modal .mf{padding:14px 20px; border-top:0.5px solid var(--border); display:flex; justify-content:flex-end; gap:10px;}
+  .fld{margin-bottom:13px;}
+  .fld label{display:block; font-size:12.5px; font-weight:500; margin-bottom:5px;}
+  .fld .rq{color:var(--danger);}
+  .fld input,.fld select,.fld textarea{width:100%; padding:8px 11px; border:0.5px solid var(--border); border-radius:var(--radius-md); font-size:13px; font-family:inherit; background:#fff; max-width:none;}
+  .fld.err input,.fld.err select,.fld.err textarea{border-color:var(--danger); background:#fff7f7;}
+  .fld .errmsg{display:none; font-size:11.5px; color:var(--danger); margin-top:4px;}
+  .fld.err .errmsg{display:block;}
+  .fld .hint{font-size:11.5px; color:var(--text3); margin-top:4px;}
+  .infobox{background:var(--surface2); border-radius:var(--radius-md); padding:10px 12px; font-size:12.5px; color:var(--text2); line-height:1.45;}
+  .tl{margin:6px 0 0; padding:0; list-style:none;}
+  .tl li{position:relative; padding:0 0 15px 22px; font-size:13px;}
+  .tl li::before{content:""; position:absolute; left:4px; top:4px; width:9px; height:9px; border-radius:50%; background:#185FA5;}
+  .tl li::after{content:""; position:absolute; left:8px; top:14px; bottom:-2px; width:1.5px; background:var(--border);}
+  .tl li:last-child::after{display:none;}
+  .tl .ts{font-size:11.5px; color:var(--text3); margin-top:1px;}
+  .toast{position:fixed; bottom:24px; right:24px; background:var(--navy); color:#fff; padding:13px 18px; border-radius:10px; font-size:13px; box-shadow:0 10px 30px rgba(0,0,0,.25); display:none; z-index:200; max-width:380px; line-height:1.45;}
+  .toast.show{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="banner">
+    <div>
+      <div class="eyebrow">CORNERSTONE COMPANIES &times; UNITY</div>
+      <h1>Unity portfolio &mdash; performance dashboard</h1>
+    </div>
+    <div class="tag">CONFIDENTIAL &middot; AUTHORIZED COLLABORATORS ONLY</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabFin" onclick="switchView('fin')">Financial dashboard</button>
+    <button class="tab" id="tabWf" onclick="switchView('wf')">Workflow tracker</button>
+  </div>
+
+  <div id="viewFin">
+  <div class="head">
+    <div class="sub">Sample data &middot; as of May 2026 close &middot; illustrative mockup<span class="scope" id="scopeLbl">&middot; showing: All regions</span></div>
+    <div class="filters">
+      <label>Region</label>
+      <select id="regionSel">
+        <option value="all">All regions</option>
+        <option value="Northeast">Northeast</option>
+        <option value="West">West</option>
+        <option value="South">South</option>
+      </select>
+      <label>Building</label>
+      <select id="buildingSel">
+        <option value="all">All buildings</option>
+        <option>OH &mdash; Zangmeister, Columbus</option>
+        <option>OH &mdash; Cincinnati Eye</option>
+        <option>NY &mdash; Calkins 200, Red Creek Dr</option>
+        <option>IN &mdash; Tri-State Ortho</option>
+        <option>AZ &mdash; Abrazo, Bell Rd</option>
+        <option>NE &mdash; Midlands I</option>
+        <option>NM &mdash; Eye Assoc ABQ</option>
+        <option>FL &mdash; Palm Beach ASC</option>
+        <option>TN &mdash; Brentwood</option>
+        <option>LA &mdash; Baton Rouge</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card"><div class="lbl">NOI &mdash; actual</div><div class="val" id="kNoi">$45.9M</div><div class="note up" id="kNoiNote">+0.9% vs budget</div></div>
+    <div class="card"><div class="lbl">Total AR</div><div class="val" id="kAr">$4.10M</div><div class="note dn" id="kArNote">$1.10M over 90 days</div></div>
+    <div class="card"><div class="lbl">Capital spend</div><div class="val" id="kCap">64%</div><div class="note" id="kCapNote">of $9.2M budget</div></div>
+    <div class="card"><div class="lbl">TIA spend</div><div class="val" id="kTia">78%</div><div class="note" id="kTiaNote">of $4.6M budget</div></div>
+  </div>
+
+  <div class="srcbar">
+    <span class="dot"></span>
+    <span><b>Source:</b> Yardi Voyager</span>
+    <span>&middot; Last refreshed <b>Jun 6, 2026</b> (May close)</span>
+    <span>&middot; Refresh cadence: <b>monthly, after close</b></span>
+    <span>&middot; Figures in USD</span>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Income statement &mdash; PY vs budget vs actual</h3>
+      <div class="legend">
+        <span><span class="sw" style="background:#85B7EB"></span>Prior year</span>
+        <span><span class="sw" style="background:#888780"></span>Budget</span>
+        <span><span class="sw" style="background:#1D9E75"></span>Actual</span>
+      </div>
+      <div class="cv"><canvas id="isChart" role="img" aria-label="Grouped bar chart comparing prior year, budget, and actual for revenue, operating expense, and NOI"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h3>AR aging</h3>
+      <div class="cv"><canvas id="arChart" role="img" aria-label="Bar chart of accounts receivable by aging bucket"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h3 id="capTitle">Capital spend vs budget &mdash; by region</h3>
+      <div class="legend">
+        <span><span class="sw" style="background:#888780"></span>Budget</span>
+        <span><span class="sw" style="background:#185FA5"></span>Spent</span>
+      </div>
+      <div class="cv" style="height:200px"><canvas id="capChart" role="img" aria-label="Bar chart of capital budget versus spent"></canvas></div>
+    </div>
+
+    <div class="panel">
+      <h3 id="tiaTitle">TIA spend vs budget &mdash; by region</h3>
+      <div class="legend">
+        <span><span class="sw" style="background:#888780"></span>Budget</span>
+        <span><span class="sw" style="background:#993C1D"></span>Spent</span>
+      </div>
+      <div class="cv" style="height:200px"><canvas id="tiaChart" role="img" aria-label="Bar chart of TIA budget versus spent"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sources">
+    <h3>Where this data comes from</h3>
+    <table>
+      <tr><td>Income statement</td><td>Yardi Voyager &mdash; Income Statement (actual vs. budget vs. prior year), exported at the property level</td></tr>
+      <tr><td>AR aging</td><td>Yardi Voyager &mdash; Aged Receivables report, by property and tenant</td></tr>
+      <tr><td>Capital spend vs. budget</td><td>Yardi Voyager &mdash; capital budget vs. actual (GL / Job Cost), by property</td></tr>
+      <tr><td>TIA spend vs. budget</td><td>Yardi Voyager &mdash; tenant improvement budget vs. actual, by property</td></tr>
+      <tr><td>Region rollups</td><td>Mapped from the Unity property list (folder structure on this site)</td></tr>
+    </table>
+  </div>
+  </div><!-- /viewFin -->
+
+  <div id="viewWf" style="display:none;">
+    <div class="wfbar">
+      <div class="roles">
+        <span class="rl">View as:</span>
+        <button class="rpill active" data-role="admin" onclick="setRole('admin')">Cornerstone Admin</button>
+        <button class="rpill" data-role="pm" onclick="setRole('pm')">Property Manager</button>
+        <button class="rpill" data-role="acct" onclick="setRole('acct')">Accountant</button>
+        <button class="rpill" data-role="am" onclick="setRole('am')">Asset Manager</button>
+      </div>
+      <div class="bellwrap">
+        <button class="bell" onclick="toggleBell()" title="Notifications">&#128276;<span class="bell-badge" id="bellBadge" style="display:none">0</span></button>
+        <div class="notif-drop" id="notifDrop"></div>
+      </div>
+    </div>
+    <div class="sub" id="roleNote" style="margin-bottom:14px;"></div>
+    <div id="wfContent"></div>
+    <div class="sources" style="margin-top:16px;">
+      <h3>How these flow</h3>
+      <table>
+        <tr><td>Holdover request</td><td>PM submits form &rarr; routed to accountant &rarr; Yardi adjustment made &rarr; form marked complete &rarr; Asset Manager + PM notified. Every step timestamped.</td></tr>
+        <tr><td>Insurance claim</td><td>PM submits form &rarr; notice sent to Asset Manager &rarr; claim sent to the property's carrier &rarr; closed when acknowledged. Every step timestamped.</td></tr>
+        <tr><td>Built with</td><td>SharePoint list + form, automated by Power Automate (Microsoft 365). Tip: switch the "View as" role above to act out each step.</td></tr>
+      </table>
+    </div>
+  </div><!-- /viewWf -->
+
+  <div class="foot">Mockup only &mdash; final build would be Power BI + SharePoint forms embedded in the Unity site, fed from scheduled Yardi exports. Sample data; workflow actions are simulated in-page.</div>
+</div>
+
+<!-- Holdover modal -->
+<div class="overlay" id="holdOverlay">
+  <div class="modal">
+    <div class="mh"><h3>Holdover notice &rarr; Accounting</h3><button class="xbtn" onclick="closeM('holdOverlay')">&times;</button></div>
+    <div class="mb">
+      <div class="fld" id="h-bld"><label>Building <span class="rq">*</span></label><select id="hBld"></select><div class="errmsg">Required.</div></div>
+      <div class="fld" id="h-ten"><label>Tenant <span class="rq">*</span></label><input id="hTen" placeholder="e.g., Tri-State Orthopedics"><div class="errmsg">Required.</div></div>
+      <div class="fld"><label>Suite / unit</label><input id="hSuite" placeholder="Ste 200"></div>
+      <div class="fld"><label>Expected renewal completion</label><input type="month" id="hEta" value="2026-08"></div>
+      <div class="fld" id="h-det"><label>Details / holdover terms <span class="rq">*</span></label><textarea id="hDet" rows="3" placeholder="Lease expiry, holdover rate per lease, renewal status..."></textarea><div class="errmsg">Required.</div></div>
+      <div class="fld"><label>What happens on submit</label><div class="infobox">&rarr; Accountant (C. Gessay) is notified to adjust the tenant to holdover in Yardi &rarr; when they complete the form, you &amp; the Asset Manager are notified and a timestamped record is filed to SharePoint.</div></div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('holdOverlay')">Cancel</button><button class="btn primary" onclick="submitHold()">Submit to Accounting</button></div>
+  </div>
+</div>
+
+<!-- Claim modal -->
+<div class="overlay" id="claimOverlay">
+  <div class="modal">
+    <div class="mh"><h3>Insurance claim &rarr; Asset Manager + carrier</h3><button class="xbtn" onclick="closeM('claimOverlay')">&times;</button></div>
+    <div class="mb">
+      <div class="fld" id="c-bld"><label>Building <span class="rq">*</span></label><select id="cBld" onchange="updCarrier()"><option value="">Select building...</option></select><div class="errmsg">Required.</div></div>
+      <div class="fld"><label>Carrier (auto-matched to building policy)</label><div class="infobox" id="cCarrier">&mdash; select building &mdash;</div></div>
+      <div class="fld" id="c-date"><label>Date of loss <span class="rq">*</span></label><input type="date" id="cDate" value="2026-06-08"><div class="errmsg">Required.</div></div>
+      <div class="fld"><label>Type of loss</label><select id="cType"><option>Water damage</option><option>Wind / hail</option><option>Fire / smoke</option><option>Liability / injury</option><option>Theft / vandalism</option></select></div>
+      <div class="fld"><label>Location (suite / area)</label><input id="cLoc" placeholder="e.g., main lobby"></div>
+      <div class="fld"><label>Estimated damage ($)</label><input type="number" id="cAmt" placeholder="42000"></div>
+      <div class="fld" id="c-desc"><label>Description <span class="rq">*</span></label><textarea id="cDesc" rows="3" placeholder="What happened, affected areas, mitigation taken..."></textarea><div class="errmsg">Required.</div></div>
+      <div class="fld"><label>What happens on submit</label><div class="infobox">&rarr; Notice sent to Asset Manager (R. Patel) &rarr; claim packet sent to the building's carrier &rarr; all steps timestamped &amp; filed in SharePoint.</div></div>
+    </div>
+    <div class="mf"><button class="btn" onclick="closeM('claimOverlay')">Cancel</button><button class="btn primary" onclick="submitClaim()">Submit claim</button></div>
+  </div>
+</div>
+
+<!-- Record viewer -->
+<div class="overlay" id="recOverlay">
+  <div class="modal">
+    <div class="mh"><h3 id="recTitle">Record</h3><button class="xbtn" onclick="closeM('recOverlay')">&times;</button></div>
+    <div class="mb" id="recBody"></div>
+    <div class="mf"><button class="btn" onclick="toast('Simulated: PDF with full timestamp history exported from SharePoint.')">Download PDF record</button><button class="btn primary" onclick="closeM('recOverlay')">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ===== FINANCIAL DATA ===== */
+var DATA = {
+  "all":{label:"All regions", is:{py:[70.4,26.8,43.6],bud:[73.0,27.5,45.5],act:[73.8,27.9,45.9]},
+    ar:[1850,760,230,160,1100], byRegion:true,
+    capR:[[4.0,2.7],[3.2,1.9],[2.0,1.3]], tiaR:[[2.0,1.6],[1.6,1.25],[1.0,0.74]]},
+  "Northeast":{label:"Northeast", is:{py:[30.5,11.8,18.7],bud:[31.6,12.0,19.6],act:[32.0,12.2,19.8]},
+    ar:[820,330,95,70,470], cap:{budget:4.0,spent:2.7}, tia:{budget:2.0,spent:1.6}},
+  "West":{label:"West", is:{py:[24.0,9.2,14.8],bud:[25.0,9.6,15.4],act:[25.3,9.7,15.6]},
+    ar:[620,250,80,55,380], cap:{budget:3.2,spent:1.9}, tia:{budget:1.6,spent:1.25}},
+  "South":{label:"South", is:{py:[15.9,5.8,10.1],bud:[16.4,5.9,10.5],act:[16.5,6.0,10.5]},
+    ar:[410,180,55,35,250], cap:{budget:2.0,spent:1.3}, tia:{budget:1.0,spent:0.74}},
+  "OH — Zangmeister, Columbus":{label:"OH — Zangmeister", is:{py:[2.40,0.95,1.45],bud:[2.50,0.98,1.52],act:[2.55,0.99,1.56]},
+    ar:[95,38,12,8,30], cap:{budget:0.45,spent:0.32}, tia:{budget:0.22,spent:0.18}},
+  "OH — Cincinnati Eye":{label:"OH — Cincinnati Eye", is:{py:[1.85,0.70,1.15],bud:[1.92,0.72,1.20],act:[1.95,0.73,1.22]},
+    ar:[72,26,9,5,18], cap:{budget:0.30,spent:0.21}, tia:{budget:0.15,spent:0.11}},
+  "NY — Calkins 200, Red Creek Dr":{label:"NY — Calkins 200", is:{py:[1.40,0.58,0.82],bud:[1.46,0.60,0.86],act:[1.47,0.61,0.86]},
+    ar:[58,22,7,12,40], cap:{budget:0.26,spent:0.14}, tia:{budget:0.12,spent:0.10}},
+  "IN — Tri-State Ortho":{label:"IN — Tri-State Ortho", is:{py:[1.62,0.63,0.99],bud:[1.68,0.65,1.03],act:[1.70,0.66,1.04]},
+    ar:[64,24,8,4,15], cap:{budget:0.28,spent:0.20}, tia:{budget:0.14,spent:0.12}},
+  "AZ — Abrazo, Bell Rd":{label:"AZ — Abrazo", is:{py:[1.95,0.76,1.19],bud:[2.02,0.78,1.24],act:[2.00,0.79,1.21]},
+    ar:[78,30,11,9,34], cap:{budget:0.34,spent:0.19}, tia:{budget:0.16,spent:0.13}},
+  "NE — Midlands I":{label:"NE — Midlands I", is:{py:[1.30,0.52,0.78],bud:[1.35,0.54,0.81],act:[1.37,0.55,0.82]},
+    ar:[50,19,6,4,12], cap:{budget:0.22,spent:0.13}, tia:{budget:0.11,spent:0.09}},
+  "NM — Eye Assoc ABQ":{label:"NM — Eye Assoc ABQ", is:{py:[1.18,0.47,0.71],bud:[1.22,0.48,0.74],act:[1.24,0.49,0.75]},
+    ar:[44,17,5,3,9], cap:{budget:0.20,spent:0.12}, tia:{budget:0.10,spent:0.08}},
+  "FL — Palm Beach ASC":{label:"FL — Palm Beach ASC", is:{py:[2.10,0.80,1.30],bud:[2.18,0.83,1.35],act:[2.20,0.84,1.36]},
+    ar:[84,32,10,6,22], cap:{budget:0.38,spent:0.27}, tia:{budget:0.18,spent:0.15}},
+  "TN — Brentwood":{label:"TN — Brentwood", is:{py:[1.05,0.42,0.63],bud:[1.10,0.43,0.67],act:[1.10,0.44,0.66]},
+    ar:[40,15,5,3,8], cap:{budget:0.18,spent:0.10}, tia:{budget:0.09,spent:0.06}},
+  "LA — Baton Rouge":{label:"LA — Baton Rouge", is:{py:[1.48,0.58,0.90],bud:[1.54,0.60,0.94],act:[1.53,0.61,0.92]},
+    ar:[56,21,7,5,16], cap:{budget:0.24,spent:0.15}, tia:{budget:0.12,spent:0.09}}
+};
+
+function money(v){ return (v<0?'-':'')+'$'+(Math.round(v*10)/10)+'M'; }
+function k(v){ return '$'+Math.round(v)+'K'; }
+function fmtTotal(kVal){ return kVal>=1000 ? '$'+(kVal/1000).toFixed(2)+'M' : '$'+Math.round(kVal)+'K'; }
+
+var isChart, arChart, capChart, tiaChart;
+
+function buildCharts(){
+  var d = DATA.all;
+  isChart = new Chart(document.getElementById('isChart'),{type:'bar',
+    data:{labels:['Revenue','OpEx','NOI'],datasets:[
+      {label:'Prior year',data:d.is.py,backgroundColor:'#85B7EB'},
+      {label:'Budget',data:d.is.bud,backgroundColor:'#888780'},
+      {label:'Actual',data:d.is.act,backgroundColor:'#1D9E75'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:money}}}}});
+
+  arChart = new Chart(document.getElementById('arChart'),{type:'bar',
+    data:{labels:['Current','1-30','31-60','61-90','90+'],datasets:[
+      {label:'AR',data:d.ar,backgroundColor:['#9FE1CB','#FAC775','#EF9F27','#D85A30','#E24B4A']}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:k}}}}});
+
+  capChart = new Chart(document.getElementById('capChart'),{type:'bar',
+    data:{labels:['Northeast','West','South'],datasets:[
+      {label:'Budget',data:[4.0,3.2,2.0],backgroundColor:'#888780'},
+      {label:'Spent',data:[2.7,1.9,1.3],backgroundColor:'#185FA5'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{ticks:{callback:money}}}}});
+
+  tiaChart = new Chart(document.getElementById('tiaChart'),{type:'bar',
+    data:{labels:['Northeast','West','South'],datasets:[
+      {label:'Budget',data:[2.0,1.6,1.0],backgroundColor:'#888780'},
+      {label:'Spent',data:[1.6,1.25,0.74],backgroundColor:'#993C1D'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},indexAxis:'y',scales:{x:{ticks:{callback:money}}}}});
+}
+
+function applyScope(key){
+  var d = DATA[key];
+  document.getElementById('scopeLbl').innerHTML = '&middot; showing: ' + d.label;
+  var noi = d.is.act[2], noiBud = d.is.bud[2];
+  var noiPct = ((noi - noiBud)/noiBud*100);
+  document.getElementById('kNoi').textContent = money(noi);
+  var noiNote = document.getElementById('kNoiNote');
+  noiNote.textContent = (noiPct>=0?'+':'') + noiPct.toFixed(1) + '% vs budget';
+  noiNote.className = 'note ' + (noiPct>=0?'up':'dn');
+  var arTotal = d.ar.reduce(function(a,b){return a+b;},0), ar90 = d.ar[4];
+  document.getElementById('kAr').textContent = fmtTotal(arTotal);
+  document.getElementById('kArNote').textContent = fmtTotal(ar90) + ' over 90 days';
+  var capBud, capSpent, tiaBud, tiaSpent;
+  if(d.byRegion){
+    capBud = d.capR.reduce(function(a,b){return a+b[0];},0); capSpent = d.capR.reduce(function(a,b){return a+b[1];},0);
+    tiaBud = d.tiaR.reduce(function(a,b){return a+b[0];},0); tiaSpent = d.tiaR.reduce(function(a,b){return a+b[1];},0);
+  } else {
+    capBud = d.cap.budget; capSpent = d.cap.spent; tiaBud = d.tia.budget; tiaSpent = d.tia.spent;
+  }
+  document.getElementById('kCap').textContent = Math.round(capSpent/capBud*100) + '%';
+  document.getElementById('kCapNote').textContent = 'of ' + money(capBud) + ' budget';
+  document.getElementById('kTia').textContent = Math.round(tiaSpent/tiaBud*100) + '%';
+  document.getElementById('kTiaNote').textContent = 'of ' + money(tiaBud) + ' budget';
+  isChart.data.datasets[0].data = d.is.py;
+  isChart.data.datasets[1].data = d.is.bud;
+  isChart.data.datasets[2].data = d.is.act;
+  isChart.update();
+  arChart.data.datasets[0].data = d.ar;
+  arChart.update();
+  if(d.byRegion){
+    document.getElementById('capTitle').innerHTML = 'Capital spend vs budget &mdash; by region';
+    document.getElementById('tiaTitle').innerHTML = 'TIA spend vs budget &mdash; by region';
+    capChart.data.labels = ['Northeast','West','South'];
+    capChart.data.datasets[0].data = d.capR.map(function(x){return x[0];});
+    capChart.data.datasets[1].data = d.capR.map(function(x){return x[1];});
+    tiaChart.data.labels = ['Northeast','West','South'];
+    tiaChart.data.datasets[0].data = d.tiaR.map(function(x){return x[0];});
+    tiaChart.data.datasets[1].data = d.tiaR.map(function(x){return x[1];});
+  } else {
+    document.getElementById('capTitle').innerHTML = 'Capital spend vs budget';
+    document.getElementById('tiaTitle').innerHTML = 'TIA spend vs budget';
+    capChart.data.labels = [d.label];
+    capChart.data.datasets[0].data = [d.cap.budget];
+    capChart.data.datasets[1].data = [d.cap.spent];
+    tiaChart.data.labels = [d.label];
+    tiaChart.data.datasets[0].data = [d.tia.budget];
+    tiaChart.data.datasets[1].data = [d.tia.spent];
+  }
+  capChart.update();
+  tiaChart.update();
+}
+
+function switchView(v){
+  var fin = v==='fin';
+  document.getElementById('viewFin').style.display = fin ? '' : 'none';
+  document.getElementById('viewWf').style.display = fin ? 'none' : '';
+  document.getElementById('tabFin').classList.toggle('active', fin);
+  document.getElementById('tabWf').classList.toggle('active', !fin);
+  if(!fin) renderWf();
+}
+
+/* ===== WORKFLOW DATA ===== */
+var BLDGS = [
+  "OH — Zangmeister, Columbus","OH — Cincinnati Eye","NY — Calkins 200, Red Creek Dr","IN — Tri-State Ortho","OH — Mill Run I",
+  "AZ — Abrazo, Bell Rd","NE — Midlands I","NM — Eye Assoc ABQ","ND — Med Arts","CA — Auburn",
+  "FL — Palm Beach ASC","TN — Brentwood","LA — Baton Rouge","FL — Jacksonville Bldg B","GA — Piedmont Loganville"
+];
+var CARRIERS = ["Travelers — Policy TRV-884210","CNA — Policy CNA-553218","The Hartford — Policy HFD-902176","Cincinnati Insurance — Policy CIC-771044"];
+function carrierFor(b){ var s=0; for(var i=0;i<b.length;i++){s+=b.charCodeAt(i);} return CARRIERS[s%CARRIERS.length]; }
+
+var ROLES = {
+  admin:{name:"Cole Macer", tag:"Admin", note:"Admin — full visibility and all workflow actions."},
+  pm:{name:"D. Reyes", tag:"PM", note:"Property Manager — submits holdover notices and insurance claims; notified on completion."},
+  acct:{name:"C. Gessay", tag:"Accounting", note:"Accountant — works the holdover queue: adjusts Yardi, then completes the form."},
+  am:{name:"R. Patel", tag:"Asset Mgr", note:"Asset Manager — receives claim notices and holdover-completion alerts; closes claims."}
+};
+var role = "admin";
+function curUser(){ return ROLES[role].name + " (" + ROLES[role].tag + ")"; }
+
+var hoSeq = 16, clSeq = 10;
+var WF = [
+ {id:"HO-2026-015", kind:"holdover", bld:"AZ — Abrazo, Bell Rd", tenant:"Abrazo Medical Group", suite:"Ste 120", details:"Renewal LOI signed, lease draft pending. Month-to-month holdover requested.", status:"Submitted", created:"Jun 22, 2026 · 9:10 AM",
+  timeline:[{at:"Jun 22, 2026 · 9:10 AM", who:"D. Reyes (PM)", txt:"Holdover form submitted"},{at:"Jun 22, 2026 · 9:10 AM", who:"System", txt:"Routed to Accounting (C. Gessay) · notification sent"}]},
+ {id:"HO-2026-014", kind:"holdover", bld:"FL — Palm Beach ASC", tenant:"Palm Beach Surgical Partners", suite:"Ste 300", details:"Lease expired 5/31; renewal in legal review. Hold at 150% base rent per lease §4.2.", status:"With accountant", created:"Jun 20, 2026 · 2:40 PM",
+  timeline:[{at:"Jun 20, 2026 · 2:40 PM", who:"D. Reyes (PM)", txt:"Holdover form submitted"},{at:"Jun 20, 2026 · 2:40 PM", who:"System", txt:"Routed to Accounting (C. Gessay) · notification sent"},{at:"Jun 21, 2026 · 10:05 AM", who:"C. Gessay (Accounting)", txt:"Yardi adjustment started — holdover rate applied"}]},
+ {id:"HO-2026-013", kind:"holdover", bld:"OH — Cincinnati Eye", tenant:"Cincinnati Eye Institute", suite:"Ste 210", details:"Renewal completed; holdover period closed in Yardi.", status:"Complete", created:"Jun 12, 2026 · 9:14 AM",
+  timeline:[{at:"Jun 12, 2026 · 9:14 AM", who:"D. Reyes (PM)", txt:"Holdover form submitted"},{at:"Jun 12, 2026 · 9:14 AM", who:"System", txt:"Routed to Accounting (C. Gessay) · notification sent"},{at:"Jun 13, 2026 · 11:02 AM", who:"C. Gessay (Accounting)", txt:"Yardi adjustment started — holdover rate applied"},{at:"Jun 16, 2026 · 2:38 PM", who:"C. Gessay (Accounting)", txt:"Marked complete in Yardi"},{at:"Jun 16, 2026 · 2:38 PM", who:"System", txt:"Asset Manager & PM notified · timestamped record saved to SharePoint › Cincinnati Eye › Leases"}]},
+ {id:"CL-2026-009", kind:"claim", bld:"NE — Midlands I", suite:"main lobby", details:"Liability / injury · loss date 6/23/2026 · est. $18,000. Slip and fall in lobby after floor cleaning. Incident report filed.", status:"Sent to insurer", carrier:carrierFor("NE — Midlands I"), created:"Jun 23, 2026 · 8:20 AM",
+  timeline:[{at:"Jun 23, 2026 · 8:20 AM", who:"D. Reyes (PM)", txt:"Insurance claim form submitted"},{at:"Jun 23, 2026 · 8:20 AM", who:"System", txt:"Notice sent to Asset Manager (R. Patel)"},{at:"Jun 23, 2026 · 8:21 AM", who:"System", txt:"Claim packet sent to "+carrierFor("NE — Midlands I").split(" — ")[0]}]},
+ {id:"CL-2026-008", kind:"claim", bld:"NY — Calkins 200, Red Creek Dr", suite:"Bldg C lobby", details:"Water damage · loss date 6/15/2026 · est. $42,000. Roof membrane failure after storm; mitigation crew on site 6/16.", status:"Sent to insurer", carrier:carrierFor("NY — Calkins 200, Red Creek Dr"), created:"Jun 19, 2026 · 8:20 AM",
+  timeline:[{at:"Jun 19, 2026 · 8:20 AM", who:"D. Reyes (PM)", txt:"Insurance claim form submitted"},{at:"Jun 19, 2026 · 8:20 AM", who:"System", txt:"Notice sent to Asset Manager (R. Patel)"},{at:"Jun 19, 2026 · 8:21 AM", who:"System", txt:"Claim packet sent to "+carrierFor("NY — Calkins 200, Red Creek Dr").split(" — ")[0]}]},
+ {id:"CL-2026-007", kind:"claim", bld:"LA — Baton Rouge", suite:"roof / exterior", details:"Wind / hail · loss date 6/8/2026 · est. $27,500. Storm damage to roof and signage. Carrier acknowledged; adjuster assigned.", status:"Closed", carrier:carrierFor("LA — Baton Rouge"), created:"Jun 10, 2026 · 11:15 AM",
+  timeline:[{at:"Jun 10, 2026 · 11:15 AM", who:"D. Reyes (PM)", txt:"Insurance claim form submitted"},{at:"Jun 10, 2026 · 11:15 AM", who:"System", txt:"Notice sent to Asset Manager (R. Patel)"},{at:"Jun 10, 2026 · 11:16 AM", who:"System", txt:"Claim packet sent to carrier"},{at:"Jun 12, 2026 · 3:02 PM", who:"R. Patel (Asset Mgr)", txt:"Carrier receipt acknowledged — adjuster assigned · claim closed"}]}
+];
+var NOTIFS = [
+ {to:["acct","admin"], txt:"New holdover HO-2026-015 (Abrazo) awaiting Yardi adjustment", when:"Jun 22, 9:10 AM", read:false},
+ {to:["am","admin"], txt:"Insurance claim CL-2026-009 (Midlands I) — notice filed; packet sent to carrier", when:"Jun 23, 8:20 AM", read:false},
+ {to:["am","pm","admin"], txt:"Holdover HO-2026-013 (Cincinnati Eye) completed by Accounting — record in SharePoint", when:"Jun 16, 2:38 PM", read:false}
+];
+
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function now(){ var d=new Date(); return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})+" · "+d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}); }
+function toast(msg){ var t=document.getElementById("toast"); t.innerHTML=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove("show");},4000); }
+
+function setRole(r){
+  role=r;
+  var pills=document.querySelectorAll(".rpill");
+  for(var i=0;i<pills.length;i++){ pills[i].classList.toggle("active", pills[i].getAttribute("data-role")===r); }
+  document.getElementById("roleNote").textContent = ROLES[r].note;
+  renderBell(); renderWf();
+}
+
+function statusBadge(s){
+  var m={"Submitted":"b-sub","With accountant":"b-prog","Complete":"b-done","Sent to insurer":"b-prog","Closed":"b-done"};
+  return '<span class="badge '+(m[s]||"b-notice")+'">'+esc(s)+'</span>';
+}
+
+function wfBtn(w){
+  var attrs='class="btn sm" onclick="event.stopPropagation();wfAction(\''+w.id+'\')"';
+  if(w.kind==="holdover"){
+    if(w.status==="Submitted" && (role==="acct"||role==="admin")) return '<button '+attrs+'>Start adjustment</button>';
+    if(w.status==="With accountant" && (role==="acct"||role==="admin")) return '<button class="btn primary sm" onclick="event.stopPropagation();wfAction(\''+w.id+'\')">Mark complete</button>';
+  } else {
+    if(w.status==="Sent to insurer" && (role==="am"||role==="admin")) return '<button '+attrs+'>Mark closed</button>';
+  }
+  return '<button class="linklike" onclick="event.stopPropagation();openRecord(\''+w.id+'\')">View record</button>';
+}
+
+function renderWf(){
+  var hos=WF.filter(function(w){return w.kind==="holdover";});
+  var cls=WF.filter(function(w){return w.kind==="claim";});
+  var openHo=hos.filter(function(w){return w.status!=="Complete";}).length;
+  var openCl=cls.filter(function(w){return w.status!=="Closed";}).length;
+  var doneMonth=WF.filter(function(w){return w.status==="Complete"||w.status==="Closed";}).length;
+
+  var hoRows=hos.map(function(w){
+    return '<tr class="rowlink" onclick="openRecord(\''+w.id+'\')">'+
+      '<td style="font-weight:500;white-space:nowrap">'+w.id+'</td>'+
+      '<td>'+esc(w.bld)+'</td><td>'+esc(w.tenant)+'</td>'+
+      '<td>'+statusBadge(w.status)+'</td>'+
+      '<td class="muted" style="white-space:nowrap">'+esc(w.created.split(" · ")[0])+'</td>'+
+      '<td>'+wfBtn(w)+'</td></tr>';
+  }).join("");
+
+  var clRows=cls.map(function(w){
+    return '<tr class="rowlink" onclick="openRecord(\''+w.id+'\')">'+
+      '<td style="font-weight:500;white-space:nowrap">'+w.id+'</td>'+
+      '<td>'+esc(w.bld)+'</td><td>'+esc(w.details.split(" · ")[0])+'</td>'+
+      '<td>'+statusBadge(w.status)+'</td>'+
+      '<td class="muted" style="white-space:nowrap">'+esc(w.created.split(" · ")[0])+'</td>'+
+      '<td>'+wfBtn(w)+'</td></tr>';
+  }).join("");
+
+  document.getElementById("wfContent").innerHTML =
+    '<div class="cards">'+
+      '<div class="card"><div class="lbl">Open holdovers</div><div class="val">'+openHo+'</div><div class="note">awaiting accountant</div></div>'+
+      '<div class="card"><div class="lbl">Open insurance claims</div><div class="val">'+openCl+'</div><div class="note">in progress</div></div>'+
+      '<div class="card"><div class="lbl">Completed this month</div><div class="val">'+doneMonth+'</div><div class="note up">across both forms</div></div>'+
+      '<div class="card"><div class="lbl">Avg time to close</div><div class="val">2.4 days</div><div class="note">holdover requests</div></div>'+
+    '</div>'+
+    '<div class="wf-actions">'+
+      '<button class="btn primary" onclick="openHold()">+ Holdover notice <span style="font-weight:400;opacity:.85">(PM → Accounting)</span></button>'+
+      '<button class="btn primary" onclick="openClaim()">+ Insurance claim <span style="font-weight:400;opacity:.85">(PM → AM + carrier)</span></button>'+
+    '</div>'+
+    '<div class="panel" style="margin-bottom:12px;"><h3>Holdover requests</h3>'+
+      '<table class="wftable"><thead><tr><th>ID</th><th>Building</th><th>Tenant</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead><tbody>'+hoRows+'</tbody></table></div>'+
+    '<div class="panel"><h3>Insurance claims</h3>'+
+      '<table class="wftable"><thead><tr><th>ID</th><th>Building</th><th>Type</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead><tbody>'+clRows+'</tbody></table></div>';
+}
+
+function wfAction(id){
+  var w=null; for(var i=0;i<WF.length;i++){ if(WF[i].id===id){w=WF[i];break;} }
+  if(!w) return;
+  if(w.kind==="holdover"){
+    if(w.status==="Submitted"){
+      w.status="With accountant";
+      w.timeline.push({at:now(), who:curUser(), txt:"Yardi adjustment started — holdover terms applied"});
+      toast("<b>"+w.id+"</b> — Yardi adjustment in progress.");
+    } else if(w.status==="With accountant"){
+      w.status="Complete";
+      w.timeline.push({at:now(), who:curUser(), txt:"Marked complete in Yardi"});
+      w.timeline.push({at:now(), who:"System", txt:"Asset Manager & PM notified · timestamped record saved to SharePoint › "+w.bld+" › Leases"});
+      NOTIFS.unshift({to:["am","pm","admin"], txt:"Holdover "+w.id+" ("+w.bld+") completed — record in SharePoint", when:now(), read:false});
+      toast("✓ <b>"+w.id+"</b> completed. Asset Manager &amp; PM notified — record filed to SharePoint with timestamps.");
+    }
+  } else if(w.status==="Sent to insurer"){
+    w.status="Closed";
+    w.timeline.push({at:now(), who:curUser(), txt:"Carrier receipt acknowledged — adjuster assigned · claim closed"});
+    toast("✓ <b>"+w.id+"</b> — carrier receipt acknowledged, claim closed.");
+  }
+  renderBell(); renderWf();
+}
+
+function openRecord(id){
+  var w=null; for(var i=0;i<WF.length;i++){ if(WF[i].id===id){w=WF[i];break;} }
+  if(!w) return;
+  document.getElementById("recTitle").textContent = w.id+" — "+(w.kind==="holdover"?"Holdover notice":"Insurance claim");
+  var head='<div style="margin-bottom:12px;font-size:13.5px"><b>'+esc(w.bld)+'</b> · '+esc(w.kind==="holdover"?(w.tenant+(w.suite?" · "+w.suite:"")):w.suite)+' &nbsp;'+statusBadge(w.status)+'</div>';
+  var car=w.carrier?'<div class="fld"><label>Carrier</label><div class="infobox">'+esc(w.carrier)+'</div></div>':'';
+  var det='<div class="fld"><label>Details</label><div class="infobox">'+esc(w.details)+'</div></div>';
+  var tl='<label style="font-size:12.5px;font-weight:500">Timestamped history</label><ul class="tl">'+w.timeline.map(function(t){return '<li><b>'+esc(t.txt)+'</b><div class="ts">'+esc(t.at)+' — '+esc(t.who)+'</div></li>';}).join("")+'</ul>';
+  var fn='<div class="hint">Record auto-filed to SharePoint › '+esc(w.bld)+' › '+(w.kind==="holdover"?"Leases":"Insurance")+'. Accessible to PM, Accounting &amp; Asset Manager.</div>';
+  document.getElementById("recBody").innerHTML = head+car+det+tl+fn;
+  document.getElementById("recOverlay").classList.add("open");
+}
+
+function closeM(id){ document.getElementById(id).classList.remove("open"); }
+
+function openHold(){
+  document.getElementById("hBld").innerHTML = '<option value="">Select building...</option>'+BLDGS.map(function(b){return '<option>'+esc(b)+'</option>';}).join("");
+  ["hTen","hSuite","hDet"].forEach(function(i){document.getElementById(i).value="";});
+  var flds=document.querySelectorAll("#holdOverlay .fld"); for(var i=0;i<flds.length;i++){flds[i].classList.remove("err");}
+  document.getElementById("holdOverlay").classList.add("open");
+}
+function submitHold(){
+  var ok=true;
+  var checks=[["h-bld", !!document.getElementById("hBld").value],["h-ten", !!document.getElementById("hTen").value.trim()],["h-det", !!document.getElementById("hDet").value.trim()]];
+  checks.forEach(function(c){ document.getElementById(c[0]).classList.toggle("err", !c[1]); if(!c[1]) ok=false; });
+  if(!ok) return;
+  var bld=document.getElementById("hBld").value, ten=document.getElementById("hTen").value.trim();
+  var id="HO-2026-"+String(hoSeq++).padStart(3,"0");
+  var eta=document.getElementById("hEta").value;
+  WF.unshift({id:id, kind:"holdover", bld:bld, tenant:ten, suite:document.getElementById("hSuite").value.trim()||"", details:document.getElementById("hDet").value.trim()+(eta?" Expected renewal completion: "+eta+".":""), status:"Submitted", created:now(),
+    timeline:[{at:now(), who:curUser(), txt:"Holdover form submitted"},{at:now(), who:"System", txt:"Routed to Accounting (C. Gessay) · notification sent"}]});
+  NOTIFS.unshift({to:["acct","admin"], txt:"New holdover "+id+" ("+bld+") — "+ten+" — awaiting Yardi adjustment", when:now(), read:false});
+  closeM("holdOverlay"); renderBell(); renderWf();
+  toast("✓ <b>"+id+"</b> submitted. Accounting notified to place <b>"+esc(ten)+"</b> in holdover. You'll be notified on completion.");
+}
+
+function updCarrier(){
+  var b=document.getElementById("cBld").value;
+  document.getElementById("cCarrier").innerHTML = b?esc(carrierFor(b)):"&mdash; select building &mdash;";
+}
+function openClaim(){
+  document.getElementById("cBld").innerHTML = '<option value="">Select building...</option>'+BLDGS.map(function(b){return '<option>'+esc(b)+'</option>';}).join("");
+  ["cLoc","cAmt","cDesc"].forEach(function(i){document.getElementById(i).value="";});
+  updCarrier();
+  var flds=document.querySelectorAll("#claimOverlay .fld"); for(var i=0;i<flds.length;i++){flds[i].classList.remove("err");}
+  document.getElementById("claimOverlay").classList.add("open");
+}
+function submitClaim(){
+  var ok=true;
+  var checks=[["c-bld", !!document.getElementById("cBld").value],["c-date", !!document.getElementById("cDate").value],["c-desc", !!document.getElementById("cDesc").value.trim()]];
+  checks.forEach(function(c){ document.getElementById(c[0]).classList.toggle("err", !c[1]); if(!c[1]) ok=false; });
+  if(!ok) return;
+  var bld=document.getElementById("cBld").value, car=carrierFor(bld);
+  var id="CL-2026-"+String(clSeq++).padStart(3,"0");
+  var amt=document.getElementById("cAmt").value?(" · est. $"+Number(document.getElementById("cAmt").value).toLocaleString()):"";
+  WF.unshift({id:id, kind:"claim", bld:bld, suite:document.getElementById("cLoc").value.trim()||"", details:document.getElementById("cType").value+" · loss date "+document.getElementById("cDate").value+amt+". "+document.getElementById("cDesc").value.trim(), status:"Sent to insurer", carrier:car, created:now(),
+    timeline:[{at:now(), who:curUser(), txt:"Insurance claim form submitted"},{at:now(), who:"System", txt:"Notice sent to Asset Manager (R. Patel)"},{at:now(), who:"System", txt:"Claim packet sent to "+car.split(" — ")[0]}]});
+  NOTIFS.unshift({to:["am","admin"], txt:"Insurance claim "+id+" ("+bld+") — notice filed; packet sent to "+car.split(" — ")[0], when:now(), read:false});
+  closeM("claimOverlay"); renderBell(); renderWf();
+  toast("✓ <b>"+id+"</b> submitted. Asset Manager notified · claim packet sent to <b>"+esc(car.split(" — ")[0])+"</b>.");
+}
+
+function renderBell(){
+  var mine=NOTIFS.filter(function(n){return n.to.indexOf(role)>-1;});
+  var unread=mine.filter(function(n){return !n.read;}).length;
+  var bb=document.getElementById("bellBadge");
+  bb.style.display = unread?"block":"none"; bb.textContent=unread;
+  var head='<div class="notif-head">Notifications — '+esc(ROLES[role].name)+' <button class="linklike" onclick="markRead()">Mark all read</button></div>';
+  var body = mine.length ? mine.map(function(n){return '<div class="notif-item" style="'+(n.read?"opacity:.55":"")+'">'+esc(n.txt)+'<div class="nw">'+esc(n.when)+'</div></div>';}).join("") : '<div class="notif-item muted">Nothing for this role yet — submit or complete a workflow to see routing.</div>';
+  document.getElementById("notifDrop").innerHTML = head+body;
+}
+function markRead(){ NOTIFS.forEach(function(n){ if(n.to.indexOf(role)>-1) n.read=true; }); renderBell(); }
+function toggleBell(){ document.getElementById("notifDrop").classList.toggle("open"); }
+
+window.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('regionSel').addEventListener('change', function(){
+    document.getElementById('buildingSel').value='all';
+    applyScope(this.value);
+  });
+  document.getElementById('buildingSel').addEventListener('change', function(){
+    if(this.value==='all'){ applyScope(document.getElementById('regionSel').value); }
+    else { document.getElementById('regionSel').value='all'; applyScope(this.value); }
+  });
+  buildCharts();
+  applyScope('all');
+  setRole('admin');
+});
+</script>
+</body>
+</html>
